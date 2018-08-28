@@ -12,7 +12,7 @@ public class Drawer extends JPanel {
 
     private static final int POINT_RADIUS = 2;
 
-    private int UPDATE_INTERVAL = 10;
+    private int UPDATE_INTERVAL = 0;
 
     public Drawer() {
         setBackground(Color.black);
@@ -42,10 +42,6 @@ public class Drawer extends JPanel {
         graphics.setColor(Color.white);
 
         ((ArrayList<Point>) points.clone()).forEach(this::printPointOnUi);
-        graphics.drawOval(CENTER_X - currentSpawnRadius, //
-                CENTER_Y - currentSpawnRadius, //
-                currentSpawnRadius * 2, //
-                currentSpawnRadius * 2);
     }
 
     private void printPointOnUi(Point point) {

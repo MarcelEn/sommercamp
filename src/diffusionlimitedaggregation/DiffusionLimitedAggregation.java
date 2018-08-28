@@ -14,10 +14,10 @@ public class DiffusionLimitedAggregation {
 
     public static final int HEIGHT = 600, //
             WIDTH = 600, //
-            SPAWN_RADIUS_PADDING = 40, //
-            MAX_RADIUS_PADDING = 10, //
-            TOUCH_DISTANCE = 1, //
-            POINT_MOVEMENT_SPEED = 4;
+            SPAWN_RADIUS_PADDING = 5, //
+            MAX_RADIUS_PADDING = 5, //
+            TOUCH_DISTANCE = 2, //
+            POINT_MOVEMENT_SPEED = 2;
 
     public static int currentSpawnRadius = SPAWN_RADIUS_PADDING;
 

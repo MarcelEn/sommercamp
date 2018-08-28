@@ -1,7 +1,5 @@
 package diffusionlimitedaggregation;
 
-import java.util.Optional;
-
 import static diffusionlimitedaggregation.DiffusionLimitedAggregation.*;
 
 public class PointFactory {
@@ -9,41 +7,28 @@ public class PointFactory {
     Point currentPoint;
 
     public Point createNextPoint() {
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("start");
         currentPoint = getStartPosition();
 
         while (isNotTouchingAOtherPoint()) {
             movePointToNewPosition();
-            System.out.println(currentPoint);
             validateNewPosition();
         }
 
         updateCurrentMax();
-
-        System.out.println("end");
-        System.out.println(currentPoint);
-
         return currentPoint;
     }
 
     private void validateNewPosition() {
-        double distanceToCenter = getDistanceToCenter();
-
-        if(distanceToCenter > (currentSpawnRadius + MAX_RADIUS_PADDING)){
+        if (getDistanceToCenter() > (currentSpawnRadius + MAX_RADIUS_PADDING))
             currentPoint = getStartPosition();
-            return;
-        }
     }
 
     private void updateCurrentMax() {
-        currentMax = (int) getDistanceToCenter();
-        currentSpawnRadius = currentMax + SPAWN_RADIUS_PADDING;
+        double distanceToCenter = getDistanceToCenter();
+        if (distanceToCenter > currentMax) {
+            currentMax = (int) getDistanceToCenter();
+            currentSpawnRadius = currentMax + SPAWN_RADIUS_PADDING;
+        }
     }
 
     private double getDistanceToCenter() {
