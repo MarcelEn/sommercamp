@@ -37,13 +37,13 @@ public class Drawer extends JPanel {
         super.paintComponent(g);
         graphics = g;
 
-        graphics.setColor(Color.white);
-
         ((ArrayList<Point>) points.clone()).forEach(this::printPointOnUi);
 
     }
 
     private void printPointOnUi(Point point) {
+        graphics.setColor(point.getColor());
+
         graphics.drawLine((int) point.getX(), (int) point.getY(), (int) point.getX(), (int) point.getY());
     }
 

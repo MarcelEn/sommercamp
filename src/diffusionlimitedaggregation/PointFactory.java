@@ -1,5 +1,7 @@
 package diffusionlimitedaggregation;
 
+import java.awt.*;
+
 import static diffusionlimitedaggregation.DiffusionLimitedAggregation.*;
 
 public class PointFactory {
@@ -12,7 +14,7 @@ public class PointFactory {
 
     private final double SECTOR_SIZE_IN_DEGREE = 360 / SECTORS;
 
-    public Point createNextPoint() {
+    public Point createNextPoint() throws LeaveFieldException {
         currentPoint = getStartPosition();
         while (isNotTouchingAOtherPoint()) {
             movePointToNewPosition();
@@ -25,17 +27,22 @@ public class PointFactory {
         int x = (int) currentPoint.getX();
         int y = (int) currentPoint.getY();
 
-        if (x < 0)
-            x = 0;
-        if (y < 0)
-            y = 0;
 
-        if (x > WIDTH)
-            x = 0;
-        if (y > HEIGHT)
-            y = 0;
+        int range = HEIGHT;
+        if (WIDTH > HEIGHT)
+            range = WIDTH;
 
-        field[x][y] = true;
+        int c = 255 - (int) (255 * (getDistanceToCenter() * 2) / range);
+
+        if (c < 0)
+            c = 0;
+
+        currentPoint.setColor(new Color(c, 255, c));
+        try {
+            field[x][y] = true;
+        } catch (Exception e) {
+            throw new LeaveFieldException();
+        }
         return currentPoint;
     }
 
@@ -120,16 +127,14 @@ public class PointFactory {
     private boolean isNotTouchingAOtherPoint() {
         for (int x = (int) currentPoint.getX() - TOUCH_DISTANCE; x < (int) currentPoint.getX() + TOUCH_DISTANCE + 1; x++) {
             for (int y = (int) currentPoint.getY() - TOUCH_DISTANCE; y < (int) currentPoint.getY() + TOUCH_DISTANCE + 1; y++) {
-                if (validateFieldRange(x, y) && field[x][y])
-                    return false;
+                try {
+                    if (field[x][y])
+                        return false;
+                } catch (Exception e) {
+                }
             }
         }
         return true;
-    }
-
-
-    private boolean validateFieldRange(int x, int y) {
-        return !(x < 0 || x > field.length || y < 0 || x > field[0].length);
     }
 
     private double getDistanceTo(Point point) {

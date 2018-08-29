@@ -1,6 +1,7 @@
 package diffusionlimitedaggregation;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -17,9 +18,9 @@ public class DiffusionLimitedAggregation {
             TOUCH_DISTANCE = 1, //
             SECTORS = 1;
 
-    public static final double SPAWN_RADIUS_PADDING = 2, //
+    public static final double SPAWN_RADIUS_PADDING = 5, //
             MAX_RADIUS_PADDING = 5, //
-            POINT_MOVEMENT_SPEED = 2;
+            POINT_MOVEMENT_SPEED = 1;
 
 
     private Drawer drawer;
@@ -52,20 +53,20 @@ public class DiffusionLimitedAggregation {
             field = new boolean[WIDTH][HEIGHT];
             try {
                 startCalculationProcess();
-            } catch (Exception e) {
-            }
+            }catch (LeaveFieldException e){}
         }
     }
 
     private void startCalculationProcess() {
-        points.add(new Point(Math.floor(WIDTH / 2), Math.floor(HEIGHT / 2)));
+        Point start = new Point(Math.floor(WIDTH / 2), Math.floor(HEIGHT / 2));
+        start.setColor(new Color(255, 255, 255));
+        points.add(start);
         field[(int) (WIDTH / 2)][(int) (HEIGHT / 2)] = true;
         PointFactory pointFactory = new PointFactory();
 
-        while (currentMax < WIDTH / 2 || currentMax < HEIGHT / 2)
+        while (true)
             points.add(pointFactory.createNextPoint());
 
-        System.out.println("finished");
     }
 
 }
