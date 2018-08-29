@@ -44,6 +44,62 @@ public class PointFactory {
         if ((int) Math.round(getRandomDouble(1)) == 0)
             y *= -1;
 
+        int a = CENTER_X - currentPoint.getX();
+        int b = CENTER_Y - currentPoint.getY();
+
+        if (a < 0)
+            a *= -1;
+        if (b < 0)
+            b *= -1;
+
+        double multiplier;
+
+        if (a < b) {
+            multiplier = a / b;
+        } else {
+            multiplier = b / a;
+        }
+
+        double CONSTANT = 4;
+
+        if (currentPoint.getX() > CENTER_X) {
+            if (currentPoint.getY() > CENTER_Y) {
+                if (a > b) {
+                    x -= CONSTANT * multiplier;
+                    y -= CONSTANT * (1 - multiplier);
+                }else{
+                    x -= CONSTANT * (1 - multiplier);
+                    y -= CONSTANT * multiplier;
+                }
+            } else {
+                if (a > b) {
+                    x += CONSTANT * multiplier;
+                    y -= CONSTANT * (1 - multiplier);
+                }else{
+                    x += CONSTANT * (1 - multiplier);
+                    y -= CONSTANT * multiplier;
+                }
+            }
+        } else {
+            if (currentPoint.getY() > CENTER_Y) {
+                if (a > b) {
+                    x -= CONSTANT * multiplier;
+                    y += CONSTANT * (1 - multiplier);
+                }else{
+                    x -= CONSTANT * (1 - multiplier);
+                    y += CONSTANT * multiplier;
+                }
+            } else {
+                if (a > b) {
+                    x += CONSTANT * multiplier;
+                    y += CONSTANT * (1 - multiplier);
+                }else{
+                    x += CONSTANT * (1 - multiplier);
+                    y += CONSTANT * multiplier;
+                }
+            }
+        }
+
         currentPoint = new Point( //
                 currentPoint.getX() + x, //
                 currentPoint.getY() + y);

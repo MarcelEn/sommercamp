@@ -12,9 +12,9 @@ public class DiffusionLimitedAggregation {
 
     public static int CENTER_Y, CENTER_X, currentMax = 0;
 
-    public static final int HEIGHT = 600, //
-            WIDTH = 600, //
-            SPAWN_RADIUS_PADDING = 5, //
+    public static final int HEIGHT = 500, //
+            WIDTH = 500, //
+            SPAWN_RADIUS_PADDING = 10, //
             MAX_RADIUS_PADDING = 5, //
             TOUCH_DISTANCE = 2, //
             POINT_MOVEMENT_SPEED = 2;
