@@ -26,8 +26,16 @@ public class PointFactory {
     }
 
     private void validateNewPosition() {
-        if (getDistanceToCenter() > (currentSpawnRadius + MAX_RADIUS_PADDING) || currentMoves > MAX_MOVEMENTS)
+        if (getDistanceToCenter() > (getCurrentMaxSector() + MAX_RADIUS_PADDING) || currentMoves > MAX_MOVEMENTS)
             currentPoint = getStartPosition();
+    }
+
+    private double getCurrentMaxSector() {
+        double max = 0;
+        for(int i = 0; i < sectorSpawnRadius.length; i++)
+            if(max < sectorSpawnRadius[i])
+                max = sectorSpawnRadius[i];
+        return max;
     }
 
     private void updateCurrentMax() {
@@ -35,7 +43,6 @@ public class PointFactory {
         int sector = getCurrentSector();
         if (distanceToCenter > sectorSpawnRadius[sector]) {
             currentMax = distanceToCenter;
-            currentSpawnRadius = currentMax + SPAWN_RADIUS_PADDING;
             sectorSpawnRadius[sector] = distanceToCenter + SPAWN_RADIUS_PADDING;
         }
     }

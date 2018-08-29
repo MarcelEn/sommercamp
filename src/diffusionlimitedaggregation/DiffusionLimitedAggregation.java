@@ -21,7 +21,6 @@ public class DiffusionLimitedAggregation {
             TOUCH_DISTANCE = 2, //
             POINT_MOVEMENT_SPEED = 2;
 
-    public static double currentSpawnRadius = SPAWN_RADIUS_PADDING;
 
     private Drawer drawer;
 
