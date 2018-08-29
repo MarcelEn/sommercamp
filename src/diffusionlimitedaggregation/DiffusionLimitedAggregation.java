@@ -7,19 +7,21 @@ import java.util.ArrayList;
 public class DiffusionLimitedAggregation {
     public static void main(String[] args) {
         new DiffusionLimitedAggregation();
-
     }
 
-    public static int CENTER_Y, CENTER_X, currentMax = 0;
+    public static double CENTER_Y, CENTER_X, currentMax = 0;
 
     public static final int HEIGHT = 500, //
             WIDTH = 500, //
-            SPAWN_RADIUS_PADDING = 10, //
+            MAX_MOVEMENTS = 10000, //
+            SECTORS = 6;
+
+    public static final double SPAWN_RADIUS_PADDING = 2, //
             MAX_RADIUS_PADDING = 5, //
             TOUCH_DISTANCE = 2, //
             POINT_MOVEMENT_SPEED = 2;
 
-    public static int currentSpawnRadius = SPAWN_RADIUS_PADDING;
+    public static double currentSpawnRadius = SPAWN_RADIUS_PADDING;
 
     private Drawer drawer;
 
@@ -47,7 +49,7 @@ public class DiffusionLimitedAggregation {
         points.add(new Point(WIDTH / 2, HEIGHT / 2));
         PointFactory pointFactory = new PointFactory();
 
-        while(currentMax < WIDTH / 2 || currentMax < HEIGHT / 2)
+        while (currentMax < WIDTH / 2 || currentMax < HEIGHT / 2)
             points.add(pointFactory.createNextPoint());
 
         System.out.println("finished");

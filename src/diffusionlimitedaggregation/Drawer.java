@@ -42,17 +42,18 @@ public class Drawer extends JPanel {
         graphics.setColor(Color.white);
 
         ((ArrayList<Point>) points.clone()).forEach(this::printPointOnUi);
-        graphics.drawOval(CENTER_X - currentSpawnRadius, //
-                CENTER_Y - currentSpawnRadius, //
-                currentSpawnRadius * 2, //
-                currentSpawnRadius * 2);
+        /*graphics.drawOval((int) (CENTER_X - currentSpawnRadius), //
+                (int) (CENTER_Y - currentSpawnRadius), //
+                (int) (currentSpawnRadius * 2), //
+                (int) (currentSpawnRadius * 2)); */
     }
 
     private void printPointOnUi(Point point) {
-        graphics.fillOval(point.getX() - POINT_RADIUS / 2, //
+        /* graphics.fillOval(point.getX() - POINT_RADIUS / 2, //
                 point.getY() - POINT_RADIUS / 2, //
                 POINT_RADIUS, //
-                POINT_RADIUS);
+                POINT_RADIUS);*/
+        graphics.drawLine((int) point.getX(), (int) point.getY(), (int) point.getX(), (int) point.getY());
     }
 
 }

@@ -6,12 +6,19 @@ public class PointFactory {
 
     Point currentPoint;
 
+    int currentMoves;
+
+    private double[] sectorSpawnRadius = new double[SECTORS];
+
+    private final double SECTOR_SIZE_IN_DEGREE = 360 / SECTORS;
+
     public Point createNextPoint() {
         currentPoint = getStartPosition();
-
+        currentMoves = 0;
         while (isNotTouchingAOtherPoint()) {
             movePointToNewPosition();
             validateNewPosition();
+            currentMoves++;
         }
 
         updateCurrentMax();
@@ -19,16 +26,56 @@ public class PointFactory {
     }
 
     private void validateNewPosition() {
-        if (getDistanceToCenter() > (currentSpawnRadius + MAX_RADIUS_PADDING))
+        if (getDistanceToCenter() > (currentSpawnRadius + MAX_RADIUS_PADDING) || currentMoves > MAX_MOVEMENTS)
             currentPoint = getStartPosition();
     }
 
     private void updateCurrentMax() {
         double distanceToCenter = getDistanceToCenter();
-        if (distanceToCenter > currentMax) {
-            currentMax = (int) getDistanceToCenter();
+        int sector = getCurrentSector();
+        if (distanceToCenter > sectorSpawnRadius[sector]) {
+            currentMax = distanceToCenter;
             currentSpawnRadius = currentMax + SPAWN_RADIUS_PADDING;
+            sectorSpawnRadius[sector] = distanceToCenter + SPAWN_RADIUS_PADDING;
         }
+    }
+
+    private int getCurrentSector() {
+        return degreeToSector(getCurrentDegree());
+    }
+
+    private double getCurrentDegree() {
+        double x = CENTER_X - currentPoint.getX();
+        double y = CENTER_Y - currentPoint.getY();
+
+        if (x < 0)
+            x *= -1;
+        if (y < 0)
+            y *= -1;
+
+        switch (getQuadrant()){
+            case 1:
+                return Math.toDegrees(Math.atan(x/y));
+            case 2:
+                return 90 + Math.toDegrees(Math.atan(y/x));
+            case 3:
+                return 180 + Math.toDegrees(Math.atan(x/y));
+            case 4:
+                return 270 + Math.toDegrees(Math.atan(y/x));
+        }
+        return 0;
+    }
+
+    private int getQuadrant() {
+        if(currentPoint.getX() > CENTER_X){
+            if(currentPoint.getY()< CENTER_Y)
+                return 1;
+            return 2;
+        }
+
+        if(currentPoint.getY()< CENTER_Y)
+            return 4;
+        return 3;
     }
 
     private double getDistanceToCenter() {
@@ -43,62 +90,6 @@ public class PointFactory {
             x *= -1;
         if ((int) Math.round(getRandomDouble(1)) == 0)
             y *= -1;
-
-        int a = CENTER_X - currentPoint.getX();
-        int b = CENTER_Y - currentPoint.getY();
-
-        if (a < 0)
-            a *= -1;
-        if (b < 0)
-            b *= -1;
-
-        double multiplier;
-
-        if (a < b) {
-            multiplier = a / b;
-        } else {
-            multiplier = b / a;
-        }
-
-        double CONSTANT = 4;
-
-        if (currentPoint.getX() > CENTER_X) {
-            if (currentPoint.getY() > CENTER_Y) {
-                if (a > b) {
-                    x -= CONSTANT * multiplier;
-                    y -= CONSTANT * (1 - multiplier);
-                }else{
-                    x -= CONSTANT * (1 - multiplier);
-                    y -= CONSTANT * multiplier;
-                }
-            } else {
-                if (a > b) {
-                    x += CONSTANT * multiplier;
-                    y -= CONSTANT * (1 - multiplier);
-                }else{
-                    x += CONSTANT * (1 - multiplier);
-                    y -= CONSTANT * multiplier;
-                }
-            }
-        } else {
-            if (currentPoint.getY() > CENTER_Y) {
-                if (a > b) {
-                    x -= CONSTANT * multiplier;
-                    y += CONSTANT * (1 - multiplier);
-                }else{
-                    x -= CONSTANT * (1 - multiplier);
-                    y += CONSTANT * multiplier;
-                }
-            } else {
-                if (a > b) {
-                    x += CONSTANT * multiplier;
-                    y += CONSTANT * (1 - multiplier);
-                }else{
-                    x += CONSTANT * (1 - multiplier);
-                    y += CONSTANT * multiplier;
-                }
-            }
-        }
 
         currentPoint = new Point( //
                 currentPoint.getX() + x, //
@@ -115,8 +106,8 @@ public class PointFactory {
     }
 
     private double getDistanceTo(Point point) {
-        int a = point.getX() - currentPoint.getX();
-        int b = point.getY() - currentPoint.getY();
+        double a = point.getX() - currentPoint.getX();
+        double b = point.getY() - currentPoint.getY();
 
         if (a < 0)
             a *= -1;
@@ -129,9 +120,30 @@ public class PointFactory {
     private Point getStartPosition() {
         double angle = getRandomDouble(360);
         return new Point( //
-                (int) Math.round(Math.sin(angle) * currentSpawnRadius) + CENTER_X, //
-                (int) Math.round(Math.cos(angle) * currentSpawnRadius) + CENTER_Y);
+                Math.round(Math.sin(angle) * getSpawnRadiusByDegree(angle)) + CENTER_X, //
+                Math.round(Math.cos(angle) * getSpawnRadiusByDegree(angle)) + CENTER_Y);
 
+    }
+
+    double getSpawnRadiusByDegree(double degree) {
+        int sector = degreeToSector(degree);
+        if (sectorSpawnRadius[sector] == 0) {
+            return SPAWN_RADIUS_PADDING;
+        }
+        return sectorSpawnRadius[sector] + SPAWN_RADIUS_PADDING;
+    }
+
+    int degreeToSector(double degree) {
+        double degreeCounter = 0;
+        int sector = -1;
+        while (degreeCounter < 360) {
+            sector++;
+            degreeCounter += SECTOR_SIZE_IN_DEGREE;
+            if (degree < degreeCounter && degree > degreeCounter - SECTOR_SIZE_IN_DEGREE) {
+                return sector;
+            }
+        }
+        return sector;
     }
 
     private double getRandomDouble(double max) {
