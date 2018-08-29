@@ -10,7 +10,7 @@ public class Drawer extends JPanel {
 
     private Graphics graphics;
 
-    private int UPDATE_INTERVAL = 10;
+    private int UPDATE_INTERVAL = 0;
 
     public Drawer() {
         setBackground(Color.black);

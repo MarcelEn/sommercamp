@@ -14,17 +14,19 @@ public class DiffusionLimitedAggregation {
     public static final int HEIGHT = 500, //
             WIDTH = 500, //
             MAX_MOVEMENTS = 10000, //
-            SECTORS = 6;
+            TOUCH_DISTANCE = 1, //
+            SECTORS = 1;
 
     public static final double SPAWN_RADIUS_PADDING = 2, //
             MAX_RADIUS_PADDING = 5, //
-            TOUCH_DISTANCE = 2, //
             POINT_MOVEMENT_SPEED = 2;
 
 
     private Drawer drawer;
 
     public static ArrayList<Point> points = new ArrayList();
+
+    public static boolean field[][] = new boolean[WIDTH][HEIGHT];
 
     public DiffusionLimitedAggregation() {
         JFrame jFrame = new JFrame();
@@ -41,11 +43,23 @@ public class DiffusionLimitedAggregation {
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        startCalculationProcess();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        while (true) {
+            field = new boolean[WIDTH][HEIGHT];
+            try {
+                startCalculationProcess();
+            } catch (Exception e) {
+            }
+        }
     }
 
     private void startCalculationProcess() {
-        points.add(new Point(WIDTH / 2, HEIGHT / 2));
+        points.add(new Point(Math.floor(WIDTH / 2), Math.floor(HEIGHT / 2)));
+        field[(int) (WIDTH / 2)][(int) (HEIGHT / 2)] = true;
         PointFactory pointFactory = new PointFactory();
 
         while (currentMax < WIDTH / 2 || currentMax < HEIGHT / 2)
