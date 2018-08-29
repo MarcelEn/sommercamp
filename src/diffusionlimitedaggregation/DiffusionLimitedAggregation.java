@@ -18,8 +18,8 @@ public class DiffusionLimitedAggregation {
             TOUCH_DISTANCE = 1, //
             SECTORS = 1;
 
-    public static final double SPAWN_RADIUS_PADDING = 5, //
-            MAX_RADIUS_PADDING = 5, //
+    public static final double SPAWN_RADIUS_PADDING = 3, //
+            MAX_RADIUS_PADDING = 3, //
             POINT_MOVEMENT_SPEED = 1;
 
 
@@ -38,8 +38,9 @@ public class DiffusionLimitedAggregation {
         drawer = new Drawer();
 
         jFrame.add(drawer);
-        jFrame.setSize(WIDTH, HEIGHT);
         jFrame.setResizable(false);
+        jFrame.setSize(WIDTH, HEIGHT);
+        jFrame.setBackground(Color.black);
         jFrame.setLayout(null);
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -51,9 +52,14 @@ public class DiffusionLimitedAggregation {
         }
         while (true) {
             field = new boolean[WIDTH][HEIGHT];
+            points = new ArrayList<>();
+            drawer = new Drawer();
+
             try {
                 startCalculationProcess();
             }catch (LeaveFieldException e){}
+
+            jFrame.add(new Drawer((ArrayList<Point>) points.clone()));
         }
     }
 

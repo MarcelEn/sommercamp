@@ -12,10 +12,19 @@ public class Drawer extends JPanel {
 
     private int UPDATE_INTERVAL = 0;
 
+    private ArrayList<Point> localPoints;
+
     public Drawer() {
-        setBackground(Color.black);
+        setBackground(new Color(0,0,0,0));
         setSize(DiffusionLimitedAggregation.WIDTH, DiffusionLimitedAggregation.HEIGHT);
         render();
+    }
+
+    public Drawer(ArrayList<Point> result){
+        this.setOpaque(false);
+        setBackground(new Color(0,0,0,0));
+        localPoints = result;
+        repaint();
     }
 
 
@@ -37,7 +46,11 @@ public class Drawer extends JPanel {
         super.paintComponent(g);
         graphics = g;
 
-        ((ArrayList<Point>) points.clone()).forEach(this::printPointOnUi);
+        if (localPoints == null) {
+            ((ArrayList<Point>) points.clone()).forEach(this::printPointOnUi);
+        } else {
+            localPoints.forEach(this::printPointOnUi);
+        }
 
     }
 
