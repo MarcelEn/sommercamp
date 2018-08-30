@@ -1,0 +1,52 @@
+Chat Protocol v1:
+
+{
+    "type": "TYPE OF ACTION" (String),
+    "payload": ACTION CONTENT
+}
+
+
+Actions from Client to Server:
+
+"REGISTER": register a new User on the server
+    "payload": {
+        "username": "username" (String)
+    }
+
+"LOGIN": login a User on the server
+    "payload" {
+        "accessKey": "jsadhnfg8ne83247524jmcsdöfaskgn-{username}" (String) <- {username} == username that is assigned to the key
+    }
+
+"SEND_MESSAGE": sends a message to a other Client
+    "payload": {
+        "senderId": 1 (int), <- the Client that wrote the message
+        "targetId": 2 (int), <- the Client that should recieve the message
+        "content": "Hello World!" (String)
+    }
+
+
+
+Actions from Server to Client:
+
+"SHOW_ACCESS_KEY": informes the Client about his access key
+    "payload" {
+        "accessKey": "jsadhnfg8ne83247524jmcsdöfaskgn" (String)
+    }
+
+"ADD_USER": informes the Client that a user gone online
+    "payload": {
+        "username": "username" (String),
+        "id": 1 (int)
+    }
+
+"REMOVE_USER": informes the Client that a user gone offline
+    "payload": 1 (int)
+
+"ADD_MESSAGE": informes the Client that a user sent a message to him
+    "payload": {
+        "senderId": 1 (int), <- the Client that wrote the message
+        "targetId": 2 (int), <- the Client that should recieve the message
+        "content": "Hello World!" (String)
+    }
+
