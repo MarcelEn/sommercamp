@@ -7,7 +7,7 @@ public enum ActionTypes {
     SEND_MESSAGE,
 
 
-    // Sever
+    // Server
     SHOW_ACCESS_KEY,
     ADD_USER,
     REMOVE_USER,

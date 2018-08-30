@@ -18,14 +18,11 @@ public class UserInputHandler {
             try {
                 connection.sendMessage(
                         ActionJsonHandler.serialize(
-                                Action.builder()
-                                .type(ActionTypes.REGISTER)
-                                .payload(
+                                new Action(ActionTypes.REGISTER,
                                         RegisterPayload.builder()
                                         .username(sc.nextLine())
                                         .build()
                                 )
-                                .build()
                         )
                 );
             } catch (IOException e) {

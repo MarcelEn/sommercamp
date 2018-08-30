@@ -1,17 +1,18 @@
 package sommercamp.engler.chatclient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import sommercamp.engler.modules.Action;
-import sommercamp.engler.modules.ActionTypes;
+import sommercamp.engler.modules.ActionJsonHandler;
+import sommercamp.engler.modules.payloads.*;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.concurrent.Executors;
+
+import static java.lang.String.*;
 
 @Getter
 public class Connection {
@@ -58,7 +59,7 @@ public class Connection {
                 while(clientSocket.isConnected()) {
                     try {
                         chatClient.onMessage(
-                                deserialize(inFromServer.readLine())
+                                ActionJsonHandler.deserialize(inFromServer.readLine())
                         );
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -66,17 +67,5 @@ public class Connection {
                 }
             }
         }.start();
-    }
-    private Action deserialize(String json) throws IOException {
-        ObjectNode node = new ObjectMapper().readValue(json, ObjectNode.class);
-        if(!node.has("type"))
-            throw new IOException("type not defined");
-
-        switch (node.get("type").asText()){
-
-        }
-
-        // mapper.readValue(deserialize(inFromServer.readLine()), Action.class)
-
     }
 }
