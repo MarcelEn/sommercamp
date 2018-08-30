@@ -1,23 +1,16 @@
 package sommercamp.engler.chatclient;
 
 import lombok.Getter;
-import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionJsonHandler;
-import sommercamp.engler.modules.payloads.*;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.concurrent.Executors;
-
-import static java.lang.String.*;
 
 @Getter
 public class Connection {
-
-    private Socket socket = null;
 
     Socket clientSocket;
     BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
@@ -28,6 +21,8 @@ public class Connection {
 
     ConnectionInformation connectionInformation;
 
+    boolean connected = false;
+
     Connection(ChatClient chatClient) {
         this.chatClient = chatClient;
         try {
@@ -35,6 +30,7 @@ public class Connection {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        connected = true;
     }
 
     private void createConnection(ConnectionInformation connectionInformation) throws IOException {
@@ -56,13 +52,14 @@ public class Connection {
     private void startOnMessageThread() {
         new Thread() {
             public void run() {
-                while(clientSocket.isConnected()) {
+                while(connected) {
                     try {
                         chatClient.onMessage(
                                 ActionJsonHandler.deserialize(inFromServer.readLine())
                         );
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        connected = false;
+                        chatClient.onServerDisconnect();
                     }
                 }
             }

@@ -25,13 +25,8 @@ public class Server {
 
         {
             Socket connectionSocket = welcomeSocket.accept();
-            BufferedReader inFromClient =
-                    new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-            clientSentence = inFromClient.readLine();
-            System.out.println("Received: " + clientSentence);
-            capitalizedSentence = clientSentence + '\n';
-            outToClient.writeBytes(capitalizedSentence);
+            UserPool.addUser(new User(connectionSocket));
+
         }
     }
 }

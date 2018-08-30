@@ -2,7 +2,7 @@ package sommercamp.engler.chatclient;
 
 
 import sommercamp.engler.modules.Action;
-public class ChatClient {
+public class ChatClient implements ConnectionRequirements {
 
     private Connection connection;
 
@@ -14,7 +14,11 @@ public class ChatClient {
         userInputHandler = new UserInputHandler(connection);
     }
 
-    void onMessage(Action action) {
+    public void onMessage(Action action) {
         System.out.println(action.getType());
+    }
+
+    public void onServerDisconnect() {
+        System.out.println("disconnect");
     }
 }
