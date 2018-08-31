@@ -43,12 +43,10 @@ public class ChatClient implements ConnectionRequirements {
             case LOGIN_SUCCESS:
                 LoginSuccessPayload loginSuccessPayload = (LoginSuccessPayload) action.getPayload();
                 userId = loginSuccessPayload.getId();
-                // userInputHandler.selectUser();
+                userInputHandler.selectUser();
                 break;
             case ADD_USER:
                 UserPool.addUser((AddUserPayload) action.getPayload());
-                if(!isChatting)
-                    UserPool.printUserSelectScreen();
                 break;
         }
 

@@ -36,7 +36,7 @@ public class UserInputHandler {
     public void login() {
         String userInput = "";
         while (userInput.equals("") || userInput.split("-").length != 2) {
-            System.out.println("Please your valid access Key");
+            System.out.println("Please enter your valid access Key");
             userInput = sc.nextLine();
         }
 
@@ -55,14 +55,13 @@ public class UserInputHandler {
     }
 
     public void selectUser(){
-        int userInput = -1;
-        while (userInput<0 || userInput> UserPool.getLength()) {
-            try{
-                userInput = sc.nextInt();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        String userInput = null;
+        while (!UserPool.isThisUserNameExist(userInput)) {
+            userInput = sc.nextLine();
+            if(userInput.equals(""))
+                UserPool.printUserSelectScreen();
         }
+        System.out.println("selected " + userInput);
     }
 
 

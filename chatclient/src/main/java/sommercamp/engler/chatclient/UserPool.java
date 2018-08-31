@@ -23,7 +23,18 @@ public class UserPool {
         ChatClient.clearScreen();
         ArrayList<User> userList = (ArrayList<User>) users.clone();
         for(int i = 0; i < userList.size(); i++)
-            System.out.println(i + " " + userList.get(i).getUsername());
+            System.out.println(userList.get(i).getUsername());
         System.out.println("\nSelect a User to chat with");
+    }
+
+    public static boolean isThisUserNameExist(String userInput) {
+        ArrayList<User> userList = (ArrayList<User>) users.clone();
+        if(userInput.equals(""))
+            return false;
+        for(int i = 0; i < userList.size(); i++)
+            if(userList.get(i).getUsername().equals(userInput))
+                return true;
+        System.out.println("Please select an existing user.");
+        return false;
     }
 }

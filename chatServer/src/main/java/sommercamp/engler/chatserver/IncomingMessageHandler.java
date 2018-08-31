@@ -4,6 +4,7 @@ import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionJsonHandler;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 
 public class IncomingMessageHandler extends Thread {
 
@@ -22,7 +23,18 @@ public class IncomingMessageHandler extends Thread {
                 message = inFromClient.readLine();
                 if (message == null)
                     throw new Exception("d");
-                handleIncomingAction(ActionJsonHandler.deserialize(message));
+
+                final String finalMessage = message;
+                new Thread() {
+                    public void run() {
+                        try {
+                            handleIncomingAction(ActionJsonHandler.deserialize(finalMessage));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+
             } catch (Exception e) {
                 clientConnection.close();
                 if (!e.getMessage().equals("d"))

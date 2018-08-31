@@ -23,7 +23,7 @@ public class Connection {
 
     Connection(ChatClient chatClient) {
         this.chatClient = chatClient;
-        while (clientSocket == null){
+        while (clientSocket == null) {
             this.connectionInformation = new ConnectionInformation();
             try {
                 clientSocket = new Socket(connectionInformation.getAddress(), connectionInformation.getPort());
@@ -62,7 +62,17 @@ public class Connection {
                         message = inFromServer.readLine();
                         if (message == null)
                             throw new Exception("d");
-                        chatClient.onMessage(ActionJsonHandler.deserialize(message));
+                        final String finalMessage = message;
+                        new Thread() {
+                            public void run() {
+                                try {
+                                    chatClient.onMessage(ActionJsonHandler.deserialize(finalMessage));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.start();
+
                     } catch (Exception e) {
 
                         chatClient.onServerDisconnect();
