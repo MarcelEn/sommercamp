@@ -41,12 +41,17 @@ Actions from Server to Client:
     }
 
 "REMOVE_USER": informes the Client that a user gone offline
-    "payload": 1 (int)
+    "payload": {
+        "id": 1 (int)
+    }
 
 "ADD_MESSAGE": informes the Client that a user sent a message to him
     "payload": {
         "senderId": 1 (int), <- the Client that wrote the message
         "targetId": 2 (int), <- the Client that should recieve the message
-        "content": "Hello World!" (String)
+        "content": "Hello World!" (String),
+        "id": id
     }
 
+"ACCESS_KEY_IS_NOT_VALID": informes the Client that the applied key is not valid
+    "payload": {}

@@ -1,9 +1,6 @@
 package sommercamp.engler.chatserver;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -17,16 +14,13 @@ public class Server {
     }
 
     private void createServer(int port) throws IOException {
-        String clientSentence;
-        String capitalizedSentence;
-        ServerSocket welcomeSocket = new ServerSocket(8080);
+        ServerSocket welcomeSocket = new ServerSocket(port);
 
         while (true)
 
         {
             Socket connectionSocket = welcomeSocket.accept();
-            UserPool.addUser(new User(connectionSocket));
-
+            ClientConnectionPool.addConnection(new ClientConnection(connectionSocket));
         }
     }
 }

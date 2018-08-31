@@ -12,7 +12,7 @@ import java.net.Socket;
 @Getter
 public class Connection {
 
-    Socket clientSocket;
+    Socket clientSocket = null;
     BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
     DataOutputStream outToServer;
     BufferedReader inFromServer;
@@ -21,27 +21,31 @@ public class Connection {
 
     ConnectionInformation connectionInformation;
 
-    boolean connected = false;
-
     Connection(ChatClient chatClient) {
         this.chatClient = chatClient;
+        while (clientSocket == null){
+            this.connectionInformation = new ConnectionInformation();
+            try {
+                clientSocket = new Socket(connectionInformation.getAddress(), connectionInformation.getPort());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         try {
-            createConnection(new ConnectionInformation());
+            startProcess();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        connected = true;
     }
 
-    private void createConnection(ConnectionInformation connectionInformation) throws IOException {
-        this.connectionInformation = connectionInformation;
-        clientSocket = new Socket(connectionInformation.getAddress(), connectionInformation.getPort());
+
+    private void startProcess() throws IOException {
         outToServer = new DataOutputStream(clientSocket.getOutputStream());
         inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         startOnMessageThread();
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         try {
             outToServer.writeBytes(message + '\n');
         } catch (IOException e) {
@@ -52,14 +56,19 @@ public class Connection {
     private void startOnMessageThread() {
         new Thread() {
             public void run() {
-                while(connected) {
+                String message;
+                while (true) {
                     try {
-                        chatClient.onMessage(
-                                ActionJsonHandler.deserialize(inFromServer.readLine())
-                        );
+                        message = inFromServer.readLine();
+                        if (message == null)
+                            throw new Exception("d");
+                        chatClient.onMessage(ActionJsonHandler.deserialize(message));
                     } catch (Exception e) {
-                        connected = false;
+
                         chatClient.onServerDisconnect();
+                        //if (!e.getMessage().equals("d"))
+                        e.printStackTrace();
+                        return;
                     }
                 }
             }
