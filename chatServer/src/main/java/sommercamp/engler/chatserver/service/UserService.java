@@ -34,12 +34,10 @@ public class UserService {
 
     public static void sendMessage(ClientConnection clientConnection, Action action) {
         SendMessagePayload sendMessagePayload = (SendMessagePayload) action.getPayload();
+
         int messageId = MessageService.addMessage(sendMessagePayload);
-        AddMessagePayload addMessagePayload = new AddMessagePayload( //
-                sendMessagePayload.getContent(), //
-                messageId, //
-                sendMessagePayload.getSenderId(), //
-                sendMessagePayload.getTargetId());
+        AddMessagePayload addMessagePayload = createAddMessagePayload(sendMessagePayload, messageId);
+
 
         ArrayList<User> users = UserPool.perform(PoolAction.GET, null);
         Sender.sendAddMessage(clientConnection, addMessagePayload);
@@ -51,5 +49,13 @@ public class UserService {
                 return;
             }
         }
+    }
+
+    static AddMessagePayload createAddMessagePayload(SendMessagePayload sendMessagePayload, int id){
+        return new AddMessagePayload( //
+                sendMessagePayload.getContent(), //
+                id, //
+                sendMessagePayload.getSenderId(), //
+                sendMessagePayload.getTargetId());
     }
 }
