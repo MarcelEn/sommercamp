@@ -2,10 +2,7 @@ package sommercamp.engler.chatserver;
 
 import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionTypes;
-import sommercamp.engler.modules.payloads.AddUserPayload;
-import sommercamp.engler.modules.payloads.BlankPayload;
-import sommercamp.engler.modules.payloads.LoginSuccessPayload;
-import sommercamp.engler.modules.payloads.ShowAccessKeyPayload;
+import sommercamp.engler.modules.payloads.*;
 
 public class Sender {
     static void sendAccessKeyIsNotValid(ClientConnection clientConnection) {
@@ -42,5 +39,13 @@ public class Sender {
                 new ShowAccessKeyPayload(accessKeyWithUsername));
 
         clientConnection.sendMessage(showAccessKeyAction);
+    }
+
+    public static void sendAddMessage(ClientConnection clientConnection, AddMessagePayload addMessagePayload) {
+        Action addMessageAction = new Action( //
+                ActionTypes.ADD_MESSAGE, //
+                addMessagePayload);
+
+        clientConnection.sendMessage(addMessageAction);
     }
 }

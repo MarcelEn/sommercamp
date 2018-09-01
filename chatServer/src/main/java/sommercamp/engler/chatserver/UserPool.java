@@ -1,7 +1,9 @@
 package sommercamp.engler.chatserver;
 
+import com.sun.xml.internal.ws.resources.SenderMessages;
 import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionTypes;
+import sommercamp.engler.modules.model.Message;
 import sommercamp.engler.modules.payloads.*;
 
 import java.util.ArrayList;
@@ -70,6 +72,7 @@ public class UserPool {
             if (!users.get(i).getUsername().equals(clientConnection.getUser().getUsername()))
                 Sender.sendAddUserInformation(users.get(i), clientConnection);
         }
+        MessagePool.sendAllMessages(clientConnection);
     }
 
     public synchronized static void removeConnectionByConnectionId(int connectionId) {
@@ -85,4 +88,14 @@ public class UserPool {
         return idCounter++;
     }
 
+    public synchronized static void sendMessage(Action action) {
+        SendMessagePayload sendMessagePayload = (SendMessagePayload) action.getPayload();
+        AddMessagePayload addMessagePayload = MessagePool.addMessage(sendMessagePayload);
+
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getClientConnection() != null && users.get(i).getId() == sendMessagePayload.getTargetId()) {
+                Sender.sendAddMessage(users.get(i).getClientConnection(), addMessagePayload);
+            }
+        }
+    }
 }

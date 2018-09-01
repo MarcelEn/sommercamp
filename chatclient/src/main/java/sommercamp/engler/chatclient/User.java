@@ -1,6 +1,7 @@
 package sommercamp.engler.chatclient;
 
 import lombok.Getter;
+import sommercamp.engler.modules.model.Message;
 import sommercamp.engler.modules.payloads.AddUserPayload;
 
 import java.util.ArrayList;
@@ -14,5 +15,9 @@ public class User {
     User(AddUserPayload addUserPayload){
         username = addUserPayload.getUsername();
         id = addUserPayload.getId();
+    }
+
+    public synchronized void addMessage(Message message) {
+        messages.add(message);
     }
 }

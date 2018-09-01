@@ -5,6 +5,7 @@ import sommercamp.engler.modules.ActionJsonHandler;
 import sommercamp.engler.modules.ActionTypes;
 import sommercamp.engler.modules.payloads.LoginPayload;
 import sommercamp.engler.modules.payloads.RegisterPayload;
+import sommercamp.engler.modules.payloads.SendMessagePayload;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -82,12 +83,26 @@ public class UserInputHandler {
         String userInput;
         while (chatClient.isChattingWith() != null) {
             userInput = sc.nextLine();
-            if (userInput.equals(""))
+            if (userInput.equals("")) {
                 UserPool.printMessages(chatClient.isChattingWith());
+                continue;
+            }
 
-            if(userInput.equals("q"))
+            if (userInput.equals("q")) {
                 chatClient.setIsChattingWith(null);
+                continue;
+            }
+            sendToServer(new Action( //
+                    ActionTypes.SEND_MESSAGE, //
+                    new SendMessagePayload( //
+                            userInput,
+                            chatClient.getUserId(), //
+                            chatClient.isChattingWith().getId() //
+                            ) //
+            ));
+
         }
+        UserPool.printUserSelectScreen();
 
         selectUser();
     }

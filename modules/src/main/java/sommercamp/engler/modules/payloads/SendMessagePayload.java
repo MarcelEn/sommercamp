@@ -1,12 +1,11 @@
 package sommercamp.engler.modules.payloads;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class SendMessagePayload implements Payload{
-    int senderId, targetId;
-    String content;
+public class SendMessagePayload implements Payload {
+    private String content;
+    private int senderId, targetId;
 }

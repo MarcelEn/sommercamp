@@ -2,6 +2,7 @@ package sommercamp.engler.chatserver;
 
 import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionJsonHandler;
+import sommercamp.engler.modules.payloads.SendMessagePayload;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -53,6 +54,8 @@ public class IncomingMessageHandler extends Thread {
                 UserPool.loginUser(clientConnection, action);
                 break;
             case SEND_MESSAGE:
+                UserPool.sendMessage(action);
+                break;
         }
     }
 }

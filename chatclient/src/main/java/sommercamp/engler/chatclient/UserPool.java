@@ -1,5 +1,7 @@
 package sommercamp.engler.chatclient;
 
+import sommercamp.engler.modules.model.Message;
+import sommercamp.engler.modules.payloads.AddMessagePayload;
 import sommercamp.engler.modules.payloads.AddUserPayload;
 
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ public class UserPool {
 
     public static synchronized void addUser(AddUserPayload addUserPayload) {
         users.add(new User(addUserPayload));
+        System.out.println(users.size());
     }
 
     public static int getLength() {
@@ -40,7 +43,7 @@ public class UserPool {
 
     public static synchronized void printMessages(User user) {
         ArrayList<Message> messages = user.getMessages();
-
+        System.out.println("printing messages-" + messages.size());
         for (int i = 0; i < messages.size(); i++) {
             if (messages.get(i).getSenderId() == user.getId()) {
                 System.out.println(user.getUsername() + ":");
@@ -59,5 +62,18 @@ public class UserPool {
             }
 
         return null;
+    }
+
+    public static void addMessage(AddMessagePayload payload) {
+        ArrayList<User> userList = (ArrayList<User>) users.clone();
+        System.out.println("gonna add a message");
+        for (int i = 0; i < userList.size(); i++){
+            System.out.println("mapping through dudes");
+            if (userList.get(i).getId() == payload.getSenderId() || userList.get(i).getId() == payload.getTargetId() || true) {
+                System.out.println("found dude");
+                userList.get(i).addMessage(new Message(payload));
+            }
+        }
+
     }
 }

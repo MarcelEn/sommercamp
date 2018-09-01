@@ -35,7 +35,7 @@ public class ActionJsonHandler {
             case LOGIN:
                 return createAction(LOGIN, LoginPayload.class, node);
             case SEND_MESSAGE:
-                return createAction(SEND_MESSAGE, RegisterPayload.class, node);
+                return createAction(SEND_MESSAGE, SendMessagePayload.class, node);
             case SHOW_ACCESS_KEY:
                 return createAction(SHOW_ACCESS_KEY, ShowAccessKeyPayload.class, node);
             case ADD_USER:
