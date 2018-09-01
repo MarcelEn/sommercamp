@@ -11,11 +11,12 @@ import sommercamp.engler.modules.payloads.RegisterPayload;
 
 import java.util.ArrayList;
 
-public class UserProcess {
-    public synchronized static void register(ClientConnection clientConnection, Action action) {
+class UserProcess {
+    synchronized static void register(ClientConnection clientConnection, Action action) {
         RegisterPayload registerPayload = (RegisterPayload) action.getPayload();
         ArrayList<User> users = UserPool.perform(PoolAction.GET, null);
 
+        assert users != null;
         for (User user : users)
             if (user.getUsername().equals(registerPayload.getUsername())) {
                 Sender.sendUserNameInUser(clientConnection);
@@ -33,10 +34,12 @@ public class UserProcess {
         afterLoginOrRegisterProcess(users, clientConnection);
     }
 
-    public synchronized static void loginUser(ClientConnection clientConnection, Action action) {
+    synchronized static void loginUser(ClientConnection clientConnection, Action action) {
         LoginPayload loginPayload = (LoginPayload) action.getPayload();
         ArrayList<User> users = UserPool.perform(PoolAction.GET, null);
         User user = null;
+
+        assert users != null;
         for (int i = 0; i < users.size(); i++) {
             user = validateTokenAndConnectionState(users.get(i), loginPayload);
             if (user != null)
@@ -70,7 +73,7 @@ public class UserProcess {
             if (!user.getUsername().equals(clientConnection.getUser().getUsername()))
                 Sender.sendAddUserInformation(user, clientConnection);
         }
-        MessagePool.sendAllMessages(clientConnection);
+        MessageService.sendAllMessages(clientConnection);
     }
 
     private static User validateTokenAndConnectionState(User user, LoginPayload loginPayload) {

@@ -34,7 +34,13 @@ public class UserService {
 
     public static void sendMessage(ClientConnection clientConnection, Action action) {
         SendMessagePayload sendMessagePayload = (SendMessagePayload) action.getPayload();
-        AddMessagePayload addMessagePayload = MessagePool.addMessage(sendMessagePayload);
+        int messageId = MessageService.addMessage(sendMessagePayload);
+        AddMessagePayload addMessagePayload = new AddMessagePayload( //
+                sendMessagePayload.getContent(), //
+                messageId, //
+                sendMessagePayload.getSenderId(), //
+                sendMessagePayload.getTargetId());
+
         ArrayList<User> users = UserPool.perform(PoolAction.GET, null);
         Sender.sendAddMessage(clientConnection, addMessagePayload);
 

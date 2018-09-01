@@ -12,6 +12,7 @@ public class UserPool {
             case ADD:
                 user.setId(users.size());
                 users.add(user);
+                break;
             case GET:
                 return (ArrayList<User>) users.clone();
         }

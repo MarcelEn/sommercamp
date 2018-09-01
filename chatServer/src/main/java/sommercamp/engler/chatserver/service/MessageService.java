@@ -1,5 +1,7 @@
 package sommercamp.engler.chatserver.service;
 
+import sommercamp.engler.chatserver.data.MessagePool;
+import sommercamp.engler.chatserver.data.PoolAction;
 import sommercamp.engler.chatserver.gateway.Sender;
 import sommercamp.engler.chatserver.model.ClientConnection;
 import sommercamp.engler.modules.model.Message;
@@ -8,32 +10,18 @@ import sommercamp.engler.modules.payloads.SendMessagePayload;
 
 import java.util.ArrayList;
 
-public class MessagePool {
-    private static ArrayList<Message> messages = new ArrayList<Message>();
+class MessageService {
 
-    private static int id = 0;
-
-
-    public synchronized static AddMessagePayload addMessage(SendMessagePayload sendMessagePayload){
-        AddMessagePayload addMessagePayload = new AddMessagePayload( //
-                sendMessagePayload.getContent(), //
-                getNextId(), //
-                sendMessagePayload.getSenderId(), //
-                sendMessagePayload.getTargetId() //
-        );
-        messages.add(new Message(addMessagePayload));
+    synchronized static int addMessage(SendMessagePayload sendMessagePayload){
         System.out.println("added message: " + sendMessagePayload.getSenderId() + " (" + sendMessagePayload.getContent() + ")-> " + sendMessagePayload.getTargetId());
-        return addMessagePayload;
+        return MessagePool.perform(PoolAction.ADD, sendMessagePayload).get(0).getId();
     }
 
-    private static int getNextId(){
-        return id++;
-    }
-
-    public static void sendAllMessages(ClientConnection clientConnection) {
-        ArrayList<Message> messagesCopy = (ArrayList<Message>) messages.clone();
+    static void sendAllMessages(ClientConnection clientConnection) {
+        ArrayList<Message> messagesCopy = MessagePool.perform(PoolAction.GET, null);
         int clientId = clientConnection.getUser().getId();
 
+        assert messagesCopy != null;
         for (Message aMessagesCopy : messagesCopy) {
             if (aMessagesCopy.getSenderId() == clientId || aMessagesCopy.getTargetId() == clientId)
                 Sender.sendAddMessage(clientConnection, new AddMessagePayload(
