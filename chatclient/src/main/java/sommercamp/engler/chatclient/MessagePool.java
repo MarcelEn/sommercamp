@@ -6,19 +6,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class MessagePool {
+class MessagePool {
     private static ArrayList<Message> messages = new ArrayList<Message>();
 
-    public static synchronized void addMessage(Message message) {
+    static synchronized void addMessage(Message message) {
         messages.add(message);
     }
 
-    public static ArrayList<Message> getMessagesOf(User user) {
+    static ArrayList<Message> getMessagesOf(User user) {
         ArrayList<Message> messagesOfUser = new ArrayList<Message>();
 
-        for (int i = 0; i < messages.size(); i++)
-            if (messages.get(i).getTargetId() == user.getId() || messages.get(i).getSenderId() == user.getId())
-                messagesOfUser.add(messages.get(i));
+        for (Message message : messages)
+            if (message.getTargetId() == user.getId() || message.getSenderId() == user.getId())
+                messagesOfUser.add(message);
 
         return sortMessagesById(messagesOfUser);
     }

@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 @Getter
-public class Connection {
+class Connection {
 
     Socket clientSocket = null;
     BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
@@ -45,7 +45,7 @@ public class Connection {
         startOnMessageThread();
     }
 
-    public void sendMessage(String message) {
+    void sendMessage(String message) {
         try {
             outToServer.writeBytes(message + '\n');
         } catch (IOException e) {

@@ -10,16 +10,14 @@ import sommercamp.engler.modules.payloads.AddUserPayload;
 
 public class ChatClient implements ConnectionRequirements {
 
-    private Connection connection;
-
-    UserInputHandler userInputHandler;
+    private UserInputHandler userInputHandler;
 
     private User isChattingWith = null;
 
     private int userId;
 
     ChatClient() {
-        connection = new Connection(this);
+        Connection connection = new Connection(this);
         System.out.println("Connected to: " + connection.getConnectionInformation());
         userInputHandler = new UserInputHandler(connection, this);
     }
@@ -54,11 +52,11 @@ public class ChatClient implements ConnectionRequirements {
 
     }
 
-    public User isChattingWith(){
+    User isChattingWith(){
         return isChattingWith;
     }
 
-    public void setIsChattingWith(User isChatting){
+    void setIsChattingWith(User isChatting){
         this.isChattingWith = isChatting;
     }
 
@@ -66,11 +64,11 @@ public class ChatClient implements ConnectionRequirements {
         System.out.println("disconnect");
     }
 
-    public int getUserId() {
+    int getUserId() {
         return userId;
     }
 
-    public static void clearScreen() {
+    static void clearScreen() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 }

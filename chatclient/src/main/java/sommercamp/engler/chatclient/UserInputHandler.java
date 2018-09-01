@@ -11,19 +11,19 @@ import java.io.IOException;
 import java.util.Scanner;
 
 
-public class UserInputHandler {
-    Connection connection;
-    Scanner sc;
-    ChatClient chatClient;
+class UserInputHandler {
+    private Connection connection;
+    private Scanner sc;
+    private ChatClient chatClient;
 
-    public UserInputHandler(Connection connection, ChatClient chatClient) {
+    UserInputHandler(Connection connection, ChatClient chatClient) {
         this.connection = connection;
         this.chatClient = chatClient;
         sc = new Scanner(System.in);
         registerOrLogin();
     }
 
-    void registerOrLogin() {
+    private void registerOrLogin() {
         System.out.println("Register or login? (r/l)");
         String userInput = "";
         while (!(userInput.equals("r") || userInput.equals("l"))) {
@@ -36,7 +36,7 @@ public class UserInputHandler {
         }
     }
 
-    public void login() {
+    void login() {
         String userInput = "";
         while (userInput.equals("") || userInput.split("-").length != 2) {
             System.out.println("Please enter your valid access Key");
@@ -46,7 +46,7 @@ public class UserInputHandler {
         sendToServer(new Action(ActionTypes.LOGIN, new LoginPayload(userInput)));
     }
 
-    public void register() {
+    void register() {
         System.out.println("Please Enter a Username");
         String userInput = "";
         while (userInput.equals("")) {
@@ -57,7 +57,7 @@ public class UserInputHandler {
 
     }
 
-    public void selectUser() {
+    void selectUser() {
         String userInput = null;
         while (!UserPool.isThisUserNameExist(userInput)) {
             userInput = sc.nextLine();
