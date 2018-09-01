@@ -12,7 +12,7 @@ import sommercamp.engler.modules.payloads.RegisterPayload;
 import java.util.ArrayList;
 
 class UserProcess {
-    static void register(ClientConnection clientConnection, Action action) {
+    synchronized static void register(ClientConnection clientConnection, Action action) {
         RegisterPayload registerPayload = (RegisterPayload) action.getPayload();
         ArrayList<User> users = UserPool.perform(PoolAction.GET, null);
 
@@ -34,7 +34,7 @@ class UserProcess {
         afterLoginOrRegisterProcess(users, clientConnection);
     }
 
-    static void loginUser(ClientConnection clientConnection, Action action) {
+    synchronized static void loginUser(ClientConnection clientConnection, Action action) {
         LoginPayload loginPayload = (LoginPayload) action.getPayload();
         ArrayList<User> users = UserPool.perform(PoolAction.GET, null);
         User user = null;

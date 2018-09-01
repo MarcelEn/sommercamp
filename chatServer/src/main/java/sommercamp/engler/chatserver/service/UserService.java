@@ -21,17 +21,6 @@ public class UserService {
         UserProcess.loginUser(clientConnection, action);
     }
 
-    static void removeConnectionByConnectionId(int connectionId) {
-        ArrayList<User> users = UserPool.perform(PoolAction.GET, null);
-        assert users != null;
-        for (User user : users) {
-            if (user.getClientConnection() != null && user.getClientConnection().getConnectionId() == connectionId) {
-                user.setClientConnection(null);
-                System.out.println("removed connection of User: " + user.getUsername());
-            }
-        }
-    }
-
     public static void sendMessage(ClientConnection clientConnection, Action action) {
         SendMessagePayload sendMessagePayload = (SendMessagePayload) action.getPayload();
 
@@ -57,5 +46,16 @@ public class UserService {
                 id, //
                 sendMessagePayload.getSenderId(), //
                 sendMessagePayload.getTargetId());
+    }
+
+    public static void setConnectionToNull(User user){
+        ArrayList<User> users = UserPool.perform(PoolAction.GET, null);
+        assert users != null;
+        for (User userListUser : users) {
+            if (userListUser.getId() == user.getId()) {
+                userListUser.setClientConnection(null);
+                System.out.println("removed connection of User: " + userListUser.getUsername());
+            }
+        }
     }
 }

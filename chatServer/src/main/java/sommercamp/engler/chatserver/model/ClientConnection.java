@@ -2,8 +2,8 @@ package sommercamp.engler.chatserver.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import sommercamp.engler.chatserver.service.ClientConnectionPool;
 import sommercamp.engler.chatserver.control.IncomingMessageHandler;
+import sommercamp.engler.chatserver.service.UserService;
 import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionJsonHandler;
 
@@ -20,12 +20,12 @@ public class ClientConnection extends Thread {
     private IncomingMessageHandler incomingMessageHandler;
     private DataOutputStream outToClient;
     private User user = null;
-    private int connectionId;
     private boolean isConnected;
+
+    private int connectionIdCounter = 0;
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
-        connectionId = ClientConnectionPool.getNextId();
         start();
     }
 
@@ -53,15 +53,7 @@ public class ClientConnection extends Thread {
         this.user = user;
     }
 
-    public int getConnectionId() {
-        return connectionId;
-    }
-
     public void close() {
-        ClientConnectionPool.removeById(connectionId);
-    }
-
-    public void setConnectionId(int connectionId) {
-        this.connectionId = connectionId;
+        UserService.setConnectionToNull(user);
     }
 }
