@@ -1,5 +1,8 @@
-package sommercamp.engler.chatserver;
+package sommercamp.engler.chatserver.control;
 
+
+import sommercamp.engler.chatserver.model.ClientConnection;
+import sommercamp.engler.chatserver.service.UserPool;
 import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionJsonHandler;
 
@@ -11,7 +14,7 @@ public class IncomingMessageHandler extends Thread {
     private BufferedReader inFromClient;
     private ClientConnection clientConnection;
 
-    IncomingMessageHandler(ClientConnection clientConnection, BufferedReader inFromClient) {
+    public IncomingMessageHandler(ClientConnection clientConnection, BufferedReader inFromClient) {
         this.clientConnection = clientConnection;
         this.inFromClient = inFromClient;
     }

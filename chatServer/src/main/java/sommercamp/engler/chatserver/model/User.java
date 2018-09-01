@@ -1,15 +1,17 @@
-package sommercamp.engler.chatserver;
+package sommercamp.engler.chatserver.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import sommercamp.engler.chatserver.service.UserPool;
 
 @Getter
 @Setter
+public
 class User {
     private String accessKey, username;
     private ClientConnection clientConnection;
     private int id;
-    User(String accessKey, String username, ClientConnection clientConnection) {
+    public User(String accessKey, String username, ClientConnection clientConnection) {
         this.accessKey = accessKey;
         this.username = username;
         this.clientConnection = clientConnection;

@@ -1,5 +1,8 @@
-package sommercamp.engler.chatserver;
+package sommercamp.engler.chatserver.service;
 
+import sommercamp.engler.chatserver.gateway.Sender;
+import sommercamp.engler.chatserver.model.ClientConnection;
+import sommercamp.engler.chatserver.model.User;
 import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.payloads.AddMessagePayload;
 import sommercamp.engler.modules.payloads.LoginPayload;
@@ -8,11 +11,11 @@ import sommercamp.engler.modules.payloads.SendMessagePayload;
 
 import java.util.ArrayList;
 
-class UserPool {
+public class UserPool {
     private static ArrayList<User> users = new ArrayList<User>();
     private static int idCounter = 0;
 
-    synchronized static void registerNewUser(ClientConnection clientConnection, Action action) {
+    public synchronized static void registerNewUser(ClientConnection clientConnection, Action action) {
         RegisterPayload registerPayload = (RegisterPayload) action.getPayload();
 
         for (User user : users)
@@ -40,7 +43,7 @@ class UserPool {
             }
     }
 
-    synchronized static void loginUser(ClientConnection clientConnection, Action action) {
+    public synchronized static void loginUser(ClientConnection clientConnection, Action action) {
         LoginPayload loginPayload = (LoginPayload) action.getPayload();
         User user = null;
         for (int i = 0; i < users.size(); i++) {
@@ -92,11 +95,11 @@ class UserPool {
         }
     }
 
-    synchronized static int getNextId() {
+    public synchronized static int getNextId() {
         return idCounter++;
     }
 
-    synchronized static void sendMessage(ClientConnection clientConnection, Action action) {
+    public synchronized static void sendMessage(ClientConnection clientConnection, Action action) {
         SendMessagePayload sendMessagePayload = (SendMessagePayload) action.getPayload();
         AddMessagePayload addMessagePayload = MessagePool.addMessage(sendMessagePayload);
 

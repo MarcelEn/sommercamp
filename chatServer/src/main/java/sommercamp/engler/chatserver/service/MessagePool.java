@@ -1,5 +1,7 @@
-package sommercamp.engler.chatserver;
+package sommercamp.engler.chatserver.service;
 
+import sommercamp.engler.chatserver.gateway.Sender;
+import sommercamp.engler.chatserver.model.ClientConnection;
 import sommercamp.engler.modules.model.Message;
 import sommercamp.engler.modules.payloads.AddMessagePayload;
 import sommercamp.engler.modules.payloads.SendMessagePayload;

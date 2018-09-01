@@ -1,4 +1,4 @@
-package sommercamp.engler.chatserver;
+package sommercamp.engler.chatserver.service;
 
 import org.apache.commons.lang3.RandomStringUtils;
 

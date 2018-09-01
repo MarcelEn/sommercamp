@@ -1,11 +1,14 @@
-package sommercamp.engler.chatserver;
+package sommercamp.engler.chatserver.boundary;
+
+import sommercamp.engler.chatserver.model.ClientConnection;
+import sommercamp.engler.chatserver.service.ClientConnectionPool;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-class Server {
-    Server(int port) {
+public class Server {
+    public Server(int port) {
         try {
             createServer(port);
         } catch (IOException e) {

@@ -1,21 +1,23 @@
-package sommercamp.engler.chatserver;
+package sommercamp.engler.chatserver.service;
 
+
+import sommercamp.engler.chatserver.model.ClientConnection;
 
 import java.util.ArrayList;
 
-class ClientConnectionPool {
+public class ClientConnectionPool {
     private static ArrayList<ClientConnection> clientConnections = new ArrayList<ClientConnection>();
 
     private static int idCount = 0;
 
-    synchronized static void addConnection(ClientConnection clientConnection) {
+    public synchronized static void addConnection(ClientConnection clientConnection) {
         clientConnections.add(clientConnection);
         clientConnection.setConnectionId(getNextId());
         System.out.println("connection pool added: " + clientConnection.getConnectionId());
     }
 
 
-    synchronized static void removeById(int id){
+    public synchronized static void removeById(int id){
         for(int i = 0; i < clientConnections.size(); i++)
             if(clientConnections.get(i).getConnectionId() == id){
                 UserPool.removeConnectionByConnectionId(clientConnections.get(i).getConnectionId());
@@ -25,7 +27,7 @@ class ClientConnectionPool {
             }
     }
 
-    synchronized static int getNextId() {
+    public synchronized static int getNextId() {
         return idCount++;
     }
 }
