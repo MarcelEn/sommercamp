@@ -2,7 +2,7 @@ package sommercamp.engler.chatserver.control;
 
 
 import sommercamp.engler.chatserver.model.ClientConnection;
-import sommercamp.engler.chatserver.service.UserPool;
+import sommercamp.engler.chatserver.service.UserService;
 import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionJsonHandler;
 
@@ -50,13 +50,13 @@ public class IncomingMessageHandler extends Thread {
     private void handleIncomingAction(Action action) {
         switch (action.getType()) {
             case REGISTER:
-                UserPool.registerNewUser(clientConnection, action);
+                UserService.registerNewUser(clientConnection, action);
                 break;
             case LOGIN:
-                UserPool.loginUser(clientConnection, action);
+                UserService.loginUser(clientConnection, action);
                 break;
             case SEND_MESSAGE:
-                UserPool.sendMessage(clientConnection, action);
+                UserService.sendMessage(clientConnection, action);
                 break;
         }
     }
