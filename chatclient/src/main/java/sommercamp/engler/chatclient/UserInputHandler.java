@@ -13,9 +13,11 @@ import java.util.Scanner;
 public class UserInputHandler {
     Connection connection;
     Scanner sc;
+    ChatClient chatClient;
 
-    public UserInputHandler(Connection connection) {
+    public UserInputHandler(Connection connection, ChatClient chatClient) {
         this.connection = connection;
+        this.chatClient = chatClient;
         sc = new Scanner(System.in);
         registerOrLogin();
     }
@@ -26,9 +28,9 @@ public class UserInputHandler {
         while (!(userInput.equals("r") || userInput.equals("l"))) {
             userInput = sc.nextLine();
         }
-        if(userInput.equals("r")){
+        if (userInput.equals("r")) {
             register();
-        }else{
+        } else {
             login();
         }
     }
@@ -54,14 +56,40 @@ public class UserInputHandler {
 
     }
 
-    public void selectUser(){
+    public void selectUser() {
         String userInput = null;
         while (!UserPool.isThisUserNameExist(userInput)) {
             userInput = sc.nextLine();
-            if(userInput.equals(""))
+            if (userInput.equals(""))
                 UserPool.printUserSelectScreen();
         }
-        System.out.println("selected " + userInput);
+
+        User user = UserPool.getUserByUsername(userInput);
+        if (user == null) {
+            selectUser();
+            return;
+        }
+        chatClient.setIsChattingWith(user);
+        startChat();
+    }
+
+    private void startChat() {
+        if (chatClient.isChattingWith() == null) {
+            selectUser();
+            return;
+        }
+
+        String userInput;
+        while (chatClient.isChattingWith() != null) {
+            userInput = sc.nextLine();
+            if (userInput.equals(""))
+                UserPool.printMessages(chatClient.isChattingWith());
+
+            if(userInput.equals("q"))
+                chatClient.setIsChattingWith(null);
+        }
+
+        selectUser();
     }
 
 
