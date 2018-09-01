@@ -1,11 +1,9 @@
 package sommercamp.engler.modules;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import sommercamp.engler.modules.payloads.*;
-import sommercamp.engler.modules.payloads.RegisterPayload;
 
 import java.io.IOException;
 

@@ -6,13 +6,13 @@ import sommercamp.engler.modules.payloads.SendMessagePayload;
 
 import java.util.ArrayList;
 
-public class MessagePool {
+class MessagePool {
     private static ArrayList<Message> messages = new ArrayList<Message>();
 
     private static int id = 0;
 
 
-    public synchronized static AddMessagePayload addMessage(SendMessagePayload sendMessagePayload){
+    synchronized static AddMessagePayload addMessage(SendMessagePayload sendMessagePayload){
         AddMessagePayload addMessagePayload = new AddMessagePayload( //
                 sendMessagePayload.getContent(), //
                 getNextId(), //
@@ -28,17 +28,17 @@ public class MessagePool {
         return id++;
     }
 
-    public static void sendAllMessages(ClientConnection clientConnection) {
+    static void sendAllMessages(ClientConnection clientConnection) {
         ArrayList<Message> messagesCopy = (ArrayList<Message>) messages.clone();
         int clientId = clientConnection.getUser().getId();
 
-        for(int i = 0; i < messagesCopy.size(); i++){
-            if(messagesCopy.get(i).getSenderId() == clientId || messagesCopy.get(i).getTargetId() == clientId)
+        for (Message aMessagesCopy : messagesCopy) {
+            if (aMessagesCopy.getSenderId() == clientId || aMessagesCopy.getTargetId() == clientId)
                 Sender.sendAddMessage(clientConnection, new AddMessagePayload(
-                        messagesCopy.get(i).getContent(),
-                        messagesCopy.get(i).getId(),
-                        messagesCopy.get(i).getSenderId(),
-                        messagesCopy.get(i).getTargetId()
+                        aMessagesCopy.getContent(),
+                        aMessagesCopy.getId(),
+                        aMessagesCopy.getSenderId(),
+                        aMessagesCopy.getTargetId()
                 ));
         }
     }

@@ -2,7 +2,6 @@ package sommercamp.engler.chatserver;
 
 import sommercamp.engler.modules.Action;
 import sommercamp.engler.modules.ActionJsonHandler;
-import sommercamp.engler.modules.payloads.SendMessagePayload;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +11,7 @@ public class IncomingMessageHandler extends Thread {
     private BufferedReader inFromClient;
     private ClientConnection clientConnection;
 
-    public IncomingMessageHandler(ClientConnection clientConnection, BufferedReader inFromClient) {
+    IncomingMessageHandler(ClientConnection clientConnection, BufferedReader inFromClient) {
         this.clientConnection = clientConnection;
         this.inFromClient = inFromClient;
     }

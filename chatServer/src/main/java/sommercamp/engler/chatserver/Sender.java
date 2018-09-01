@@ -33,7 +33,7 @@ public class Sender {
         clientConnection.sendMessage(showAccessKeyAction);
     }
 
-    public static void sendShowAccessKey(ClientConnection clientConnection, String accessKeyWithUsername) {
+    static void sendShowAccessKey(ClientConnection clientConnection, String accessKeyWithUsername) {
         Action showAccessKeyAction = new Action( //
                 ActionTypes.SHOW_ACCESS_KEY, //
                 new ShowAccessKeyPayload(accessKeyWithUsername));
@@ -41,7 +41,7 @@ public class Sender {
         clientConnection.sendMessage(showAccessKeyAction);
     }
 
-    public static void sendAddMessage(ClientConnection clientConnection, AddMessagePayload addMessagePayload) {
+    static void sendAddMessage(ClientConnection clientConnection, AddMessagePayload addMessagePayload) {
         Action addMessageAction = new Action( //
                 ActionTypes.ADD_MESSAGE, //
                 addMessagePayload);

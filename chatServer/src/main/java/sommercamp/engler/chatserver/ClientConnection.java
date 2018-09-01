@@ -21,7 +21,7 @@ public class ClientConnection extends Thread {
     private int connectionId;
     private boolean isConnected;
 
-    public ClientConnection(Socket socket) {
+    ClientConnection(Socket socket) {
         this.socket = socket;
         connectionId = ClientConnectionPool.getNextId();
         start();
@@ -47,19 +47,19 @@ public class ClientConnection extends Thread {
     }
 
 
-    public void setUser(User user) {
+    void setUser(User user) {
         this.user = user;
     }
 
-    public int getConnectionId() {
+    int getConnectionId() {
         return connectionId;
     }
 
-    public void close() {
+    void close() {
         ClientConnectionPool.removeById(connectionId);
     }
 
-    public void setConnectionId(int connectionId) {
+    void setConnectionId(int connectionId) {
         this.connectionId = connectionId;
     }
 }
