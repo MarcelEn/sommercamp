@@ -2,6 +2,7 @@ package sommercamp.engler.chatserver.boundary;
 
 import sommercamp.engler.chatserver.model.ClientConnection;
 import sommercamp.engler.chatserver.service.ClientConnectionPool;
+import sommercamp.engler.modules.ActionJsonHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -22,8 +23,12 @@ public class Server {
         while (true)
 
         {
-            Socket connectionSocket = welcomeSocket.accept();
-            ClientConnectionPool.addConnection(new ClientConnection(connectionSocket));
+            final Socket connectionSocket = welcomeSocket.accept();
+            new Thread() {
+                public void run() {
+                    ClientConnectionPool.addConnection(new ClientConnection(connectionSocket));
+                }
+            }.start();
         }
     }
 }
