@@ -54,7 +54,7 @@ public class IncomingMessageHandler extends Thread {
                 UserPool.loginUser(clientConnection, action);
                 break;
             case SEND_MESSAGE:
-                UserPool.sendMessage(action);
+                UserPool.sendMessage(clientConnection, action);
                 break;
         }
     }

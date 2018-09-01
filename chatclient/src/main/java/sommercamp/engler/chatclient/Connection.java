@@ -76,8 +76,8 @@ public class Connection {
                     } catch (Exception e) {
 
                         chatClient.onServerDisconnect();
-                        //if (!e.getMessage().equals("d"))
-                        e.printStackTrace();
+                        if (!e.getMessage().equals("d"))
+                            e.printStackTrace();
                         return;
                     }
                 }

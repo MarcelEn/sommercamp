@@ -29,7 +29,15 @@ public class UserPool {
 
         Sender.sendShowAccessKey(clientConnection, accessKey + "-" + registerPayload.getUsername());
 
+        informAllOnlineUserAboutNewUser(newUser);
         afterLoginOrRegisterProcess(clientConnection);
+    }
+
+    private static void informAllOnlineUserAboutNewUser(User newUser){
+        for (int i = 0; i < users.size(); i++)
+            if (users.get(i).getClientConnection() != null && users.get(i).getId() != newUser.getId()) {
+                Sender.sendAddUserInformation(newUser, users.get(i).getClientConnection());
+            }
     }
 
     public synchronized static void loginUser(ClientConnection clientConnection, Action action) {
@@ -88,13 +96,16 @@ public class UserPool {
         return idCounter++;
     }
 
-    public synchronized static void sendMessage(Action action) {
+    public synchronized static void sendMessage(ClientConnection clientConnection, Action action) {
         SendMessagePayload sendMessagePayload = (SendMessagePayload) action.getPayload();
         AddMessagePayload addMessagePayload = MessagePool.addMessage(sendMessagePayload);
+
+        Sender.sendAddMessage(clientConnection, addMessagePayload);
 
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getClientConnection() != null && users.get(i).getId() == sendMessagePayload.getTargetId()) {
                 Sender.sendAddMessage(users.get(i).getClientConnection(), addMessagePayload);
+                return;
             }
         }
     }

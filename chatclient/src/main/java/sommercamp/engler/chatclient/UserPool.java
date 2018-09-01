@@ -11,7 +11,6 @@ public class UserPool {
 
     public static synchronized void addUser(AddUserPayload addUserPayload) {
         users.add(new User(addUserPayload));
-        System.out.println(users.size());
     }
 
     public static int getLength() {
@@ -27,7 +26,7 @@ public class UserPool {
         ArrayList<User> userList = (ArrayList<User>) users.clone();
         for (int i = 0; i < userList.size(); i++)
             System.out.println(userList.get(i).getUsername());
-        System.out.println("\nSelect a User to chat with and send q to get back here or just press enter to update your messages");
+        System.out.println("\nSelect a User to chat with or press enter to update your messages");
     }
 
     public static boolean isThisUserNameExist(String userInput) {
@@ -42,8 +41,7 @@ public class UserPool {
     }
 
     public static synchronized void printMessages(User user) {
-        ArrayList<Message> messages = user.getMessages();
-        System.out.println("printing messages-" + messages.size());
+        ArrayList<Message> messages = MessagePool.getMessagesOf(user);
         for (int i = 0; i < messages.size(); i++) {
             if (messages.get(i).getSenderId() == user.getId()) {
                 System.out.println(user.getUsername() + ":");
@@ -62,18 +60,5 @@ public class UserPool {
             }
 
         return null;
-    }
-
-    public static void addMessage(AddMessagePayload payload) {
-        ArrayList<User> userList = (ArrayList<User>) users.clone();
-        System.out.println("gonna add a message");
-        for (int i = 0; i < userList.size(); i++){
-            System.out.println("mapping through dudes");
-            if (userList.get(i).getId() == payload.getSenderId() || userList.get(i).getId() == payload.getTargetId() || true) {
-                System.out.println("found dude");
-                userList.get(i).addMessage(new Message(payload));
-            }
-        }
-
     }
 }

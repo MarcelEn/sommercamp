@@ -10,14 +10,9 @@ import java.util.ArrayList;
 public class User {
     private String username;
     private int id;
-    ArrayList<Message> messages = new ArrayList<Message>();
 
     User(AddUserPayload addUserPayload){
         username = addUserPayload.getUsername();
         id = addUserPayload.getId();
-    }
-
-    public synchronized void addMessage(Message message) {
-        messages.add(message);
     }
 }

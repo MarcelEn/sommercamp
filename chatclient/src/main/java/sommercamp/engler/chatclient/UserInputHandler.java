@@ -61,8 +61,9 @@ public class UserInputHandler {
         String userInput = null;
         while (!UserPool.isThisUserNameExist(userInput)) {
             userInput = sc.nextLine();
-            if (userInput.equals(""))
+            if (userInput.equals("")) {
                 UserPool.printUserSelectScreen();
+            }
         }
 
         User user = UserPool.getUserByUsername(userInput);
@@ -79,7 +80,7 @@ public class UserInputHandler {
             selectUser();
             return;
         }
-
+        UserPool.printMessages(chatClient.isChattingWith());
         String userInput;
         while (chatClient.isChattingWith() != null) {
             userInput = sc.nextLine();

@@ -2,6 +2,7 @@ package sommercamp.engler.chatclient;
 
 
 import sommercamp.engler.modules.Action;
+import sommercamp.engler.modules.model.Message;
 import sommercamp.engler.modules.payloads.AddMessagePayload;
 import sommercamp.engler.modules.payloads.LoginSuccessPayload;
 import sommercamp.engler.modules.payloads.ShowAccessKeyPayload;
@@ -24,7 +25,6 @@ public class ChatClient implements ConnectionRequirements {
     }
 
     public void onMessage(Action action) {
-        System.out.println(action.getType());
         switch (action.getType()){
             case SHOW_ACCESS_KEY:
                 ShowAccessKeyPayload showAccessKeyPayload = (ShowAccessKeyPayload) action.getPayload();
@@ -48,8 +48,7 @@ public class ChatClient implements ConnectionRequirements {
                 UserPool.addUser((AddUserPayload) action.getPayload());
                 break;
             case ADD_MESSAGE:
-                // TODO: move messages to a message pool
-                UserPool.addMessage((AddMessagePayload) action.getPayload());
+                MessagePool.addMessage(new Message((AddMessagePayload) action.getPayload()));
                 break;
         }
 
