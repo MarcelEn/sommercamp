@@ -15,6 +15,8 @@ public class InputConsole extends Client {
 
     private String myName, peerName = null;
 
+    boolean informedPeerAboutMyName = false;
+
     public InputConsole() {
         super();
         String userInput = "";
@@ -30,11 +32,12 @@ public class InputConsole extends Client {
 
         if (userInput.equals("1")) {
             assignPeerConnectionClient();
+            peerConnection.sendMessage(myName);
+            informedPeerAboutMyName = true;
         } else {
             assignPeerConnectionServer();
         }
 
-        peerConnection.sendMessage(myName);
         startChatProcess();
     }
 
@@ -50,6 +53,10 @@ public class InputConsole extends Client {
     private void onPeerConnectionMessage(String message) {
         if (peerName == null) {
             peerName = message;
+            if(!informedPeerAboutMyName){
+                peerConnection.sendMessage(myName);
+                informedPeerAboutMyName = true;
+            }
             return;
         }
         sendMessage(peerName + ":\n" + message + "\n");

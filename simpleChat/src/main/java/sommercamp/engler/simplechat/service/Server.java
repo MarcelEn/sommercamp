@@ -14,11 +14,12 @@ public abstract class Server implements ConnectionInstance {
 
     public Server() {
         int port = -1;
-        while (port < 0 || port > 65535){
+        while (port < 0 || port > 65535) {
             System.out.println("Please enter a valid Port");
             try {
                 port = Integer.parseInt(sc.nextLine());
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
 
         try {
@@ -33,24 +34,25 @@ public abstract class Server implements ConnectionInstance {
         System.out.println("listening on: " + port);
         final Server serverRef = this;
 
-        while (true) {
-            final Socket connectionSocket = welcomeSocket.accept();
-            new Thread() {
-                public void run() {
-                    try {
-                        new OnMessage(serverRef, connectionSocket);
-                        outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+        final Socket connectionSocket = welcomeSocket.accept();
+        new Thread() {
+            public void run() {
+                try {
+                    new OnMessage(serverRef, connectionSocket);
+                    outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }.start();
-        }
+            }
+        }.start();
+
     }
 
     public void sendMessage(String content) {
         try {
-            outToClient.writeBytes(content + "\n");
+            if (outToClient != null)
+                outToClient.writeBytes(content + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
