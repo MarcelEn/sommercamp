@@ -6,9 +6,6 @@ public class Display extends Server {
 
     public Display(){
         super();
-        sendMessage("hey");
-        sendMessage("hey");
-        sendMessage("hey");
 
     }
 
