@@ -6,10 +6,14 @@ public class InputConsole extends Client {
 
     public InputConsole(){
         super();
-        sendMessage("hi");
-        sendMessage("hi");
-        sendMessage("hi");
-        sendMessage("hi");
+        while(true){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            sendMessage("send to Server");
+        }
     }
 
     public void onMessage(String message) {

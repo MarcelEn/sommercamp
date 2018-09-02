@@ -1,5 +1,7 @@
 package sommercamp.engler.simplechat.service;
 
+import sommercamp.engler.simplechat.model.DisonnectException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +29,8 @@ public class OnMessage extends Thread {
             final String message;
             try {
                 message = reader.readLine();
+                if(message == null)
+                    throw new DisonnectException();
                 new Thread() {
                     public void run() {
                         ref.onMessage(message);

@@ -6,9 +6,14 @@ public class Display extends Server {
 
     public Display(){
         super();
-        sendMessage("hey");
-        sendMessage("hey");
-        sendMessage("hey");
+        while(true){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            sendMessage("Send to client");
+        }
 
     }
 
