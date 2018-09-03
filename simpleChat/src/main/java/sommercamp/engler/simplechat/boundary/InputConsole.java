@@ -6,6 +6,7 @@ import sommercamp.engler.simplechat.service.Client;
 import sommercamp.engler.simplechat.service.ConnectionInstance;
 
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class InputConsole extends Client {
 
@@ -14,6 +15,9 @@ public class InputConsole extends Client {
     private ConnectionInstance peerConnection;
 
     private String myName, peerName = null;
+
+    private Consumer<String> onPeerMessage = this::onPeerConnectionMessage;
+    private Consumer<Exception> onPeerException = this::onPeerConnectionException;
 
     boolean informedPeerAboutMyName = false;
 
@@ -31,11 +35,11 @@ public class InputConsole extends Client {
         }
 
         if (userInput.equals("1")) {
-            assignPeerConnectionClient();
+            peerConnection = new RemoteConnectionClient(onPeerMessage, onPeerException);
             peerConnection.sendMessage(myName);
             informedPeerAboutMyName = true;
         } else {
-            assignPeerConnectionServer();
+            peerConnection = new RemoteConnectionServer(onPeerMessage, onPeerException);
         }
 
         startChatProcess();
@@ -66,30 +70,6 @@ public class InputConsole extends Client {
         e.printStackTrace();
     }
 
-
-    private void assignPeerConnectionServer() {
-        peerConnection = new RemoteConnectionServer() {
-            public void onMessage(String message) {
-                onPeerConnectionMessage(message);
-            }
-
-            public void onError(Exception e) {
-                onPeerConnectionException(e);
-            }
-        };
-    }
-
-    private void assignPeerConnectionClient() {
-        peerConnection = new RemoteConnectionClient() {
-            public void onMessage(String message) {
-                onPeerConnectionMessage(message);
-            }
-
-            public void onError(Exception e) {
-                onPeerConnectionException(e);
-            }
-        };
-    }
 
     public void onMessage(String message) {
     }
