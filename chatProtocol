@@ -20,7 +20,6 @@ Actions from Client to Server:
 
 "SEND_MESSAGE": sends a message to a other Client
     "payload": {
-        "senderId": 1 (int), <- the Client that wrote the message
         "targetId": 2 (int), <- the Client that should recieve the message
         "content": "Hello World!" (String)
     }
