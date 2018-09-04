@@ -9,12 +9,12 @@ import java.util.ArrayList;
 public class MessagePool {
     private static ArrayList<Message> messages = new ArrayList<Message>();
 
-    public synchronized static ArrayList<Message> perform(PoolAction poolAction, SendMessagePayload sendMessagePayload){
+    public synchronized static ArrayList<Message> perform(PoolAction poolAction, SendMessagePayload sendMessagePayload, Integer senderId){
         switch (poolAction){
             case ADD:
                 Message message = new Message( //
                         sendMessagePayload.getContent(), //
-                        sendMessagePayload.getSenderId(), //
+                        senderId, //
                         sendMessagePayload.getTargetId(), //
                         messages.size());
 

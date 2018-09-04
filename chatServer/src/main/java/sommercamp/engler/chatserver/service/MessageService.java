@@ -12,13 +12,13 @@ import java.util.ArrayList;
 
 class MessageService {
 
-    synchronized static int addMessage(SendMessagePayload sendMessagePayload){
-        System.out.println("added message: " + sendMessagePayload.getSenderId() + " (" + sendMessagePayload.getContent() + ")-> " + sendMessagePayload.getTargetId());
-        return MessagePool.perform(PoolAction.ADD, sendMessagePayload).get(0).getId();
+    synchronized static int addMessage(SendMessagePayload sendMessagePayload, int senderId){
+        System.out.println("added message: " + senderId + " (" + sendMessagePayload.getContent() + ")-> " + sendMessagePayload.getTargetId());
+        return MessagePool.perform(PoolAction.ADD, sendMessagePayload, senderId).get(0).getId();
     }
 
     static void sendAllMessages(ClientConnection clientConnection) {
-        ArrayList<Message> messagesCopy = MessagePool.perform(PoolAction.GET, null);
+        ArrayList<Message> messagesCopy = MessagePool.perform(PoolAction.GET, null, null);
         int clientId = clientConnection.getUser().getId();
 
         assert messagesCopy != null;
@@ -31,5 +31,13 @@ class MessageService {
                         aMessagesCopy.getTargetId()
                 ));
         }
+    }
+
+    static AddMessagePayload createAddMessagePayload(SendMessagePayload sendMessagePayload, int messageId, int senderId){
+        return new AddMessagePayload( //
+                sendMessagePayload.getContent(), //
+                messageId, //
+                senderId, //
+                sendMessagePayload.getTargetId());
     }
 }
