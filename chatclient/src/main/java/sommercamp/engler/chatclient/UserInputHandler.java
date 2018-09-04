@@ -97,7 +97,6 @@ class UserInputHandler {
                     ActionTypes.SEND_MESSAGE, //
                     new SendMessagePayload( //
                             userInput,
-                            chatClient.getUserId(), //
                             chatClient.isChattingWith().getId() //
                             ) //
             ));
