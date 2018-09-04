@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SendMessagePayload implements Payload {
     private String content;
-    private int senderId, targetId;
+    private int targetId;
 }

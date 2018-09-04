@@ -9,12 +9,11 @@ import sommercamp.engler.modules.payloads.SendMessagePayload;
 @AllArgsConstructor
 public class Message {
     private String content;
-    private int senderId, targetId;
-    private Integer id = null;
+    private int targetId;
+    private Integer senderId, id = null;
 
     public Message(SendMessagePayload sendMessagePayload){
         content = sendMessagePayload.getContent();
-        senderId = sendMessagePayload.getSenderId();
         targetId = sendMessagePayload.getTargetId();
     }
 
