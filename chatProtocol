@@ -18,7 +18,7 @@ Actions from Client to Server:
         "accessKey": "jsadhnfg8ne83247524jmcsdöfaskgn-{username}" (String) <- {username} == username that is assigned to the key
     }
 
-"SEND_MESSAGE": sends a message to a other Client
+"SEND_MESSAGE": sends a message to another Client
     "payload": {
         "targetId": 2 (int), <- the Client that should recieve the message
         "content": "Hello World!" (String)
@@ -28,23 +28,23 @@ Actions from Client to Server:
 
 Actions from Server to Client:
 
-"SHOW_ACCESS_KEY": informes the Client about his access key
+"SHOW_ACCESS_KEY": informs the Client about his access key
     "payload" {
         "accessKey": "jsadhnfg8ne83247524jmcsdöfaskgn" (String)
     }
 
-"ADD_USER": informes the Client that a user gone online
+"ADD_USER": informs the Client that a user gone online
     "payload": {
         "username": "username" (String),
         "id": 1 (int)
     }
 
-"REMOVE_USER": informes the Client that a user gone offline
+"REMOVE_USER": informs the Client that a user gone offline
     "payload": {
         "id": 1 (int)
     }
 
-"ADD_MESSAGE": informes the Client that a user sent a message to him
+"ADD_MESSAGE": informs the Client that a user sent a message to him
     "payload": {
         "senderId": 1 (int), <- the Client that wrote the message
         "targetId": 2 (int), <- the Client that should recieve the message
@@ -52,5 +52,5 @@ Actions from Server to Client:
         "id": id
     }
 
-"ACCESS_KEY_IS_NOT_VALID": informes the Client that the applied key is not valid
+"ACCESS_KEY_IS_NOT_VALID": informs the Client that the applied key is not valid
     "payload": {}
