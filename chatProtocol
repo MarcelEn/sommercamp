@@ -54,3 +54,6 @@ Actions from Server to Client:
 
 "ACCESS_KEY_IS_NOT_VALID": informes the Client that the applied key is not valid
     "payload": {}
+
+"USERNAME_ALREADY_IN_USE": informes the Client that the username is already in use
+    "payload": {}
