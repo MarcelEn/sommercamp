@@ -1,0 +1,14 @@
+let data = "";
+
+let parsedData = [];
+
+client.on('data', (dataBlock) => {
+    data += dataBlock.toString();
+    for (let i = 0; i < data.length; i++) {
+        try {
+            parsedData.push(JSON.parse(data.slice(0, i)));
+            data = data.slice(i, data.length);
+            i = 0;
+        } catch (error) { }
+    }
+});
